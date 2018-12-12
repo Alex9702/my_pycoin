@@ -11,9 +11,10 @@ class Blockchain:
         block = Block(len(self.chain), previous_hash, self.transactions[:], proof)
         self.chain.append(block)
 
-    def add_transaction(sef, sender, receiver, amount, signature=None):
+    def add_transaction(self, sender, receiver, amount, signature=None):
         transaction = Transactions(sender, receiver, amount, signature)
-
+        self.transactions.append(transaction)
+    
     def print_chain(self):
         for c in self.chain:
             print(c)
