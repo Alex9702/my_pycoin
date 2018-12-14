@@ -1,7 +1,9 @@
 from Crypto.PublicKey import RSA
 import binascii
-import Crypto.Random as rnd
+from os import urandom
 
 
-pr = RSA.generate(1024,  rnd.new().read)
-pk = pr.publickey()
+# pr = RSA.generate(1024,  rnd.new().read)
+# pk = pr.publickey()
+
+print(urandom(256))
