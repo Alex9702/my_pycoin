@@ -1,4 +1,4 @@
-__all__ = ['create_block']
+__all__ = ['create_block', 'print_blockchain']
 from .block import Block
 from .transactions import Transactions
 from .Encoding.hash_util import hash_block, hash_string_256
@@ -23,10 +23,10 @@ def create_block(previous_hash, proof):
     chain.append(block)
     return block
 
-def proof_of_work(previous_proof):
+def proof_of_work(previous_proof, difficult=4):
     proof = 1
     while True:
-        if hash_string_256(str(proof**2 - previous_proof**2))[:4] == '0000':
+        if hash_string_256(str(proof**2 - previous_proof**2))[:4] == '0' * difficult:
             return proof
         proof += 1
 

@@ -1,9 +1,19 @@
 from Crypto.PublicKey import RSA
 import binascii
-from os import urandom
+import Crypto.Random
 
+# public_key = binascii.hexlify(RSA.generate(1024, Crypto.Random.new().read).exportKey(format='DER')).decode('ascii')
 
-# pr = RSA.generate(1024,  rnd.new().read)
-# pk = pr.publickey()
+def base16_to_base58(x):
+    words = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+    b58 = ''
+    total = int(x, 16)
+    while total > 0:
+        b58 += words[total%len(words)]
+        if total < len(words):
+            b58 += words[len(words)]
+            break
+        total //= len(words)
+    return b58
 
-print(urandom(256))
+print(base16_to_base58('acd123'))
