@@ -1,10 +1,13 @@
 __all__ = ['create_keys', 'save_keys', 'read_keys']
+
 import json
 import os
 import binascii
 import hashlib
 from Crypto.PublicKey import RSA
 import Crypto.Random
+from Crypto.Hash import	SHA256
+from Crypto.Signature import PKCS1_v1_5
 from Blockchain.Util.wallet_base import base16_to_base58, base58_to_base16
 
 
@@ -32,3 +35,15 @@ def read_keys(owner:str):
 
 def delete_wallet(owner:str):
     os.remove(f'{_root_dir}\\keys\\{owner}.pem')
+
+def sign_transaction(owner, transaction):
+    pr = RSA.importKey(binascii.unhexlify(base58_to_base16(read_keys(owner)['private_key'])))
+    h = SHA256.new(owner.encode())
+    signature = PKCS1_v1_5.new(pr).sign(h)
+    return base16_to_base58(binascii.hexlify(signature).decode('ascii'))
+
+def verify_transaction(owner, signature):
+    pk = RSA.importKey(binascii.unhexlify(base58_to_base16(read_keys(owner)['public_key'])))
+    h = SHA256.new(owner.encode())
+    verifier = PKCS1_v1_5.new(pk)
+    return verifier.verify(h, binascii.unhexlify(base58_to_base16(signature)))
