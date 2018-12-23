@@ -1,4 +1,4 @@
-__all__ = ['create_keys', 'save_keys', 'read_keys']
+__all__ = ['save_keys', 'read_keys', 'delete_wallet', 'sign_transaction', 'verify_transaction']
 
 import json
 import os
