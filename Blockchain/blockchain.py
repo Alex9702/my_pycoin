@@ -25,20 +25,22 @@ def get_balance(t):
                  for tx in bloco['transactions']
                  if tx['sender'] == t]
     tx_receiver_transactions = [tx['amount'] for tx in transactions if tx['receiver'] == t]
-    tx_receiver_sender = [tx['amount'] for tx in transactions if tx['sender'] == t]
-    print(tx_receiver_transactions, tx_receiver_sender)
+    tx_sender_transactions = [tx['amount'] for tx in transactions if tx['sender'] == t]
+    tx_sender.extend(tx_sender_transactions)
+    tx_receiver.extend(tx_receiver_transactions)
+    return (sum(tx_receiver) > sum(tx_sender))
 
 def add_transaction(sender, receiver, amount):
-
-    transactions = load_transactions()
-    transaction = {
-        'sender': sender,
-        'receiver': receiver,
-        'amount': amount,
-        'signature': None
-    }
-    transactions.append(transaction)
-    save_transactions(transactions)
+    if get_balance(sender):
+        transactions = load_transactions()
+        transaction = {
+            'sender': sender,
+            'receiver': receiver,
+            'amount': amount,
+            'signature': None
+        }
+        transactions.append(transaction)
+        save_transactions(transactions)
 
 def clear_transactions():
     save_transactions([])
