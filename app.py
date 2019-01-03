@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from Blockchain.Util.data_handler import load_blockchain, load_transactions
-from Blockchain.blockchain import is_valid_chain, add_transaction
+from Blockchain.blockchain import is_valid_chain, add_transaction, mine_block
 
 app = Flask(__name__)
 
@@ -26,6 +26,13 @@ def add_transactions():
     add_transaction(json['sender'],json['receiver'], json['amount'])
     response = {'mensagem':'Transação adiconada.', 'transações':load_transactions()}
     return jsonify(response), 201
+
+
+@app.route('/miner_block', methods=['GET'])
+def miner_block():
+    mine_block('Alex')
+    blockchain = load_blockchain()
+    return jsonify(blockchain[-1])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
